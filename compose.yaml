@@ -1,0 +1,32 @@
+services:
+  rust:
+    build: ./rust
+    ports:
+      - "8080:8080"
+    environment:
+      DATABASE_PATH: /data/app.db
+    volumes:
+      - rust-data:/data
+
+  php:
+    build: ./php
+    ports:
+      - "8081:80"
+    environment:
+      DATABASE_PATH: /var/www/data/app.db
+    volumes:
+      - php-data:/var/www/data
+
+  next:
+    build: ./ts
+    ports:
+      - "3000:3000"
+    environment:
+      DATABASE_PATH: /data/app.db
+    volumes:
+      - next-data:/data
+
+volumes:
+  rust-data:
+  php-data:
+  next-data:

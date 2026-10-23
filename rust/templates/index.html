@@ -1,0 +1,93 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Guestbook</title>
+  <style>
+    * { box-sizing: border-box; }
+    body {
+      margin: 0;
+      background: #f6f6f6;
+      color: #111;
+      font: 16px/1.5 system-ui, -apple-system, "Segoe UI", sans-serif;
+    }
+    main {
+      width: min(640px, calc(100% - 2rem));
+      margin: 3rem auto;
+    }
+    h1 { margin: 0 0 .25rem; font-size: 1.75rem; }
+    .subtitle { margin: 0 0 2rem; color: #555; }
+    .card {
+      background: #fff;
+      border: 1px solid #d8d8d8;
+      padding: 1rem;
+      margin-bottom: 1rem;
+    }
+    form { display: grid; gap: .75rem; }
+    label { display: grid; gap: .25rem; font-weight: 600; }
+    input, textarea {
+      width: 100%;
+      border: 1px solid #bbb;
+      background: #fff;
+      color: #111;
+      padding: .55rem .65rem;
+      font: inherit;
+    }
+    textarea { min-height: 6rem; resize: vertical; }
+    button {
+      justify-self: start;
+      border: 1px solid #111;
+      background: #111;
+      color: #fff;
+      padding: .5rem .9rem;
+      font: inherit;
+      cursor: pointer;
+    }
+    .entry h2 { margin: 0 0 .25rem; font-size: 1rem; }
+    .entry p { margin: 0 0 .5rem; white-space: pre-wrap; }
+    .entry time { color: #666; font-size: .8rem; }
+    .entry .delete {
+      border: 1px solid #bbb;
+      background: #fff;
+      color: #111;
+      padding: .2rem .5rem;
+      font-size: .8rem;
+    }
+    .empty { color: #666; }
+  </style>
+</head>
+<body>
+  <main>
+    <h1>Guestbook</h1>
+    <p class="subtitle">Leave a note for everyone who visits.</p>
+
+    <section class="card">
+      <form method="post" action="/">
+        <label>
+          Name
+          <input name="name" maxlength="80" required>
+        </label>
+        <label>
+          Message
+          <textarea name="message" maxlength="500" required></textarea>
+        </label>
+        <button type="submit">Post message</button>
+      </form>
+    </section>
+
+    {% for entry in entries %}
+      <article class="card entry">
+        <h2>{{ entry.name }}</h2>
+        <p>{{ entry.message }}</p>
+        <time>{{ entry.created_at }}</time>
+        <form method="post" action="/delete/{{ entry.id }}">
+          <button class="delete" type="submit">Delete</button>
+        </form>
+      </article>
+    {% else %}
+      <p class="empty">No messages yet.</p>
+    {% endfor %}
+  </main>
+</body>
+</html>
